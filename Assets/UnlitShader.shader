@@ -1,5 +1,10 @@
 ﻿Shader "Test/UnlitShader"
 {
+	Properties
+	{
+		_CompareColour ("Compare Colour", Color) = (1.0, 0.5, 0.1, 1.0)
+	}
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
@@ -23,8 +28,10 @@
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
-				fixed4 color : SV_Target; // change to float4 to fix!
+				fixed4 color : SV_Target;
 			};
+
+			uniform float4 _CompareColour;
 
 			v2f vert (appdata v)
 			{
@@ -37,7 +44,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float amplify_error = 500;
-				return (i.color - fixed4(1.0, 0.5, 0.1, 1.0)) * amplify_error + i.color;
+				return (i.color - _CompareColour) * amplify_error + i.color;
 			}
 			ENDCG
 		}
