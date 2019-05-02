@@ -23,7 +23,7 @@
 #define BIT_ENCODE_2 (4.0/255.0)
 #define BIT_ENCODE_3 (8.0/255.0)
 #define BIT_ENCODE_4 (16.0/255.0)
-#define BIT_ENCODE_6 (64.0/255.0)
+#define BIT_ENCODE_5 (32.0/255.0)
 
 #define BIT_CHECK_1(X) (fmod(round(X*255), 4) >= 2)
 #define BIT_CHECK_2(X) (fmod(round(X*255), 8) >= 4)
@@ -34,7 +34,6 @@
 
 half decodeFlags(float encodedFlags)
 {
-	half f1 = BIT_CHECK_1(encodedFlags);
 	half f2 = BIT_CHECK_2(encodedFlags);
 	half f3 = 0;
 	half f4 = 0;
@@ -52,7 +51,7 @@ half decodeFlags(float encodedFlags)
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
-				float2 uv[2] : TEXCOORD0;
+				float4 uv[2] : TEXCOORD0;
 			};
 
 			sampler2D _MainTex;
@@ -65,6 +64,7 @@ half decodeFlags(float encodedFlags)
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				float2 uv = v.uv.xy;
 				o.uv[0].xy = uv;
+				o.uv[0].zw = uv + float2(_MainTex_TexelSize.x, 0);
 				o.uv[1].xy = uv + float2(_MainTex_TexelSize.x, 0);
 				return o;
 			}
@@ -82,13 +82,14 @@ half decodeFlags(float encodedFlags)
 				half f2 = min(1, BIT_CHECK_3(texA) + BIT_CHECK_3(texA2));
 
 				float encodedFlags = 0;
-				encodedFlags += f1 * BIT_ENCODE_1;
+				encodedFlags += f3 * BIT_ENCODE_1;
 				encodedFlags += f2 * BIT_ENCODE_2;
 				encodedFlags += f3 * BIT_ENCODE_3;
-				encodedFlags += f4 * BIT_ENCODE_4;
-				encodedFlags += f1 * BIT_ENCODE_6;
+				encodedFlags += f3 * BIT_ENCODE_4;
+				encodedFlags += f3 * BIT_ENCODE_5;
 				encodedFlags += 0;
 
+				half d1 = BIT_CHECK_1(encodedFlags);
 				decodeFlags(encodedFlags);
 
 				return BIT_CHECK_2(encodedFlags);
