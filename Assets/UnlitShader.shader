@@ -42,24 +42,17 @@
 				return o;
 			}
 			
-			#define BIT_ENCODE_3 (8.0/255.0)
-			#define BIT_ENCODE_0 (1.0/255.0)
-
-			#define BIT_CHECK_3(X) (fmod(round(X*255), 16) >= 8)
-
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float texA = tex2D(_MainTex, i.uv.xy).a;
-				float texR = tex2D(_MainTex, i.uv.xy).r;
-
-				float f0 = min(1, BIT_CHECK_3(texA) + BIT_CHECK_3(texR));
-				float f1 = BIT_CHECK_3(texA);
-
-				float encodedFlags = 0;
-				encodedFlags += f0 * BIT_ENCODE_3;
-				encodedFlags += f1 * BIT_ENCODE_0;
-
-				return BIT_CHECK_3(encodedFlags);
+				float4 tex = tex2D(_MainTex, i.uv.xy);
+				int rg = int(tex.r > 0.5) + int(tex.g > 0.5);
+				int b = int(tex.b > 0.5);
+#define BUG 1
+#if BUG
+				return rg * 0.25 + b * 0.25;
+#else
+				return (rg + b) * 0.25;
+#endif
 			}
 			ENDCG
 		}
