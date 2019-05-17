@@ -5,6 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/ShaderBug.unity
-    guid: 7947c613c4878d84a922e1c0b5bdb388
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotate : MonoBehaviour
+public class Move : MonoBehaviour
 {
 	void Update()
 	{
-		transform.Rotate(0.0f, Time.deltaTime * 60.0f, 0.0f);
+		transform.Rotate(Vector3.right * Time.deltaTime * 90.0f, Space.Self);
 	}
 }
