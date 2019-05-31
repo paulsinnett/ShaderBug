@@ -16,7 +16,6 @@
 
 			#include "UnityCG.cginc"
 
-			#pragma target 5.0
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -38,8 +37,7 @@
 
 			half4 frag(v2f i) : SV_Target
 			{
-				float depth = SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv.xy);
-				return float4(depth, 0, 0, 1);
+				return Linear01Depth(SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv.xy));
 			}
 
 			ENDCG
