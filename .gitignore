@@ -26,6 +26,8 @@ ExportedObj/
 *.opendb
 *.VC.db
 *.nsp
+*.code-workspace
+*.dll
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -37,3 +39,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+ShaderBug*
