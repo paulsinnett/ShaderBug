@@ -19,7 +19,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
 
-			uniform sampler2D _LastCameraDepthTexture;
+			uniform sampler2D _MyDepthBufferCopy;
 				
 			struct v2f 
 			{
@@ -37,7 +37,7 @@
 
 			half4 frag(v2f i) : SV_Target
 			{
-				return Linear01Depth(SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv.xy));
+				return Linear01Depth(SAMPLE_DEPTH_TEXTURE(_MyDepthBufferCopy, i.uv.xy));
 			}
 
 			ENDCG
